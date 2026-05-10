@@ -20,9 +20,18 @@ npm run preview
 
 产物含 `sitemap.xml` 与 `robots.txt`（域名见下方 SEO 小节）。
 
-## SEO 与上线
+## Vercel 部署
 
-详见仓库内 [.env.example](.env.example)：设置 `VITE_SITE_URL` 后构建，以获得正确的 `canonical` / 站点地图地址。静态托管请配置 SPA **history fallback**。
+1. 在 [Vercel Dashboard](https://vercel.com/new) 导入本仓库（或通过 Vercel CLI `vercel` 链接项目）。  
+2. **Framework Preset** 选 **Vite**，或保持自动识别；构建命令 `npm run build`，输出目录 **`dist`**（仓库根目录的 [vercel.json](vercel.json) 已写明，并包含 SPA 重写，避免 `/pdf/compress` 等路由刷新 404）。  
+3. 在 Vercel → **Settings → Environment Variables** 为 **Production**（以及需要的话 Preview）添加：  
+   - `VITE_SITE_URL` = 你的线上根地址，例如 `https://xxxxx.vercel.app` 或自定义域名（**不要**末尾斜杠）。  
+   这样构建产物里的 `sitemap.xml`、`robots.txt` 以及运行时的 `canonical` / `og:url` 才会指向正确域名。  
+4. 保存变量后 **Redeploy** 一次，使新构建带上环境变量。
+
+## SEO 与上线（其他静态托管）
+
+详见 [.env.example](.env.example)：设置 `VITE_SITE_URL` 后构建，以获得正确的 `canonical` / 站点地图地址。非 Vercel 时仍需为 SPA 配置 **history fallback**（与 Vercel 中 `rewrites` 等效）。
 
 ## 能力边界
 
